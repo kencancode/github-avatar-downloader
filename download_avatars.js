@@ -2,7 +2,7 @@ var repoOwner = process.argv[2]
 var repoName = process.argv[3]
 
 
-var secret = require('./secret.js')
+var secret = require('./secret.js');
 var request = require('request');
 var fs = require('fs');
 
@@ -13,10 +13,10 @@ function getRepoContributors(repoOwner, repoName, cb) {
     console.log('Error! The repository owner and repository name must be provided')
   } else {
       var options = {
-    url: "https://api.github.com/repos/" + repoOwner + "/" + repoName + "/contributors",
-    headers: {
-      'User-Agent': 'request',
-      'Authorization' : 'token ' + secret.GITHUB_TOKEN
+      url: "https://api.github.com/repos/" + repoOwner + "/" + repoName + "/contributors",
+      headers: {
+        'User-Agent': 'request',
+        'Authorization' : 'token ' + secret.GITHUB_TOKEN
     }
   };
 
@@ -27,7 +27,7 @@ function getRepoContributors(repoOwner, repoName, cb) {
     userList.forEach(function(eachUser){
       console.log(eachUser.avatar_url);
       downloadImageByURL(eachUser.avatar_url, './avatars/' + eachUser.login + ".jpg" )
-    })
+    });
   });
   }
 }
@@ -48,6 +48,6 @@ function downloadImageByURL(url, filePath) {
 
 getRepoContributors(repoOwner, repoName, function(err, result) {
   if(err) throw err
-  });
+});
 
 
