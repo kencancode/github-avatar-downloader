@@ -1,6 +1,6 @@
 var secret = require('./secret.js')
 var request = require('request');
-var fs = require('fs');             //do i need this?
+var fs = require('fs');
 
 console.log('Welcome to the GitHub Avatar Downloader!');
 
@@ -19,10 +19,10 @@ function getRepoContributors(repoOwner, repoName, cb) {
 
     userList.forEach(function(eachUser){
       console.log(eachUser.avatar_url);
+      downloadImageByURL(eachUser.avatar_url, './avatars/' + eachUser.login + ".jpg" )
     })
   });
 }
-
 
 function downloadImageByURL(url, filePath) {
   request.get(url)
@@ -37,8 +37,6 @@ function downloadImageByURL(url, filePath) {
        })
        .pipe(fs.createWriteStream(filePath));
 }
-
-downloadImageByURL("https://avatars2.githubusercontent.com/u/2741?v=3&s=466", "avatars/kvirani.jpg")
 
 getRepoContributors("jquery", "jquery", function(err, result) {
   console.log("Errors:", err);
