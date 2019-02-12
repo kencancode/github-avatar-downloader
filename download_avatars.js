@@ -1,3 +1,7 @@
+var repoOwner = process.argv[2]
+var repoName = process.argv[3]
+
+
 var secret = require('./secret.js')
 var request = require('request');
 var fs = require('fs');
@@ -5,7 +9,10 @@ var fs = require('fs');
 console.log('Welcome to the GitHub Avatar Downloader!');
 
 function getRepoContributors(repoOwner, repoName, cb) {
-  var options = {
+  if(repoOwner === undefined || repoName === undefined){
+    console.log('Error! The repository owner and repository name must be provided')
+  } else {
+      var options = {
     url: "https://api.github.com/repos/" + repoOwner + "/" + repoName + "/contributors",
     headers: {
       'User-Agent': 'request',
@@ -22,6 +29,7 @@ function getRepoContributors(repoOwner, repoName, cb) {
       downloadImageByURL(eachUser.avatar_url, './avatars/' + eachUser.login + ".jpg" )
     })
   });
+  }
 }
 
 function downloadImageByURL(url, filePath) {
@@ -38,9 +46,8 @@ function downloadImageByURL(url, filePath) {
        .pipe(fs.createWriteStream(filePath));
 }
 
-getRepoContributors("jquery", "jquery", function(err, result) {
-  console.log("Errors:", err);
-  console.log("Result:", result);
-});
+getRepoContributors(repoOwner, repoName, function(err, result) {
+  if(err) throw err
+  });
 
 
